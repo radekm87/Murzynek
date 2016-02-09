@@ -1,0 +1,63 @@
+package pl.radmit;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Properties;
+
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+
+public class Thermometr {
+	public String testMethod() throws Exception {
+		StringBuffer strReturn = new StringBuffer();
+		JSch jsch = new JSch();
+		Session session = jsch.getSession("pi", "192.168.1.16", 22);
+
+		session.setPassword("raspberry");
+		Properties config = new Properties();
+		config.put("StrictHostKeyChecking", "no");
+		session.setConfig(config);
+		session.connect();
+
+		ChannelExec channel = (ChannelExec) session.openChannel("exec");
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				channel.getInputStream()));
+		channel.setCommand("sudo ./git/Adafruit_Python_DHT/examples/AdafruitDHT.py 22 4;");
+		channel.connect();
+
+		String msg = null;
+		while ((msg = in.readLine()) != null) {
+			strReturn.append(msg);
+		}
+
+		channel.disconnect();
+		session.disconnect();
+
+		//
+		//
+		// Process p = Runtime.getRuntime().exec("ssh pi@192.168.1.16");
+		// PrintStream out = new PrintStream(p.getOutputStream());
+		// BufferedReader in = new BufferedReader(new
+		// InputStreamReader(p.getInputStream()));
+		//
+		// out.println("ls -l /home/pi");
+		// while (in.ready()) {
+		// String s = in.readLine();
+		// System.out.println(s);
+		// }
+		// out.println("exit");
+		//
+		// p.waitFor();
+
+		return strReturn.toString();
+	}
+
+	public String getCurrentTime() throws Exception {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		return sdf.format(cal.getTime());
+	}
+}
