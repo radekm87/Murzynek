@@ -2,36 +2,68 @@ package pl.radmit;
 
 import java.math.BigDecimal;
 
-import org.bitpipeline.lib.owm.OwmClient;
-import org.bitpipeline.lib.owm.WeatherData;
-import org.bitpipeline.lib.owm.WeatherData.WeatherCondition;
-import org.bitpipeline.lib.owm.WeatherStatusResponse;
-
+import net.aksingh.owmjapis.CurrentWeather;
+import net.aksingh.owmjapis.OpenWeatherMap;
+import net.aksingh.owmjapis.OpenWeatherMap.Units;
 
 public class WeatherInformator {
+	private static int counter = 10;
+	
 	public String getCurrentWeatherInfo() throws Exception {
+//		if(counter < 10) {
+//			counter++;
+//			return "";
+//		}
+//		
+//		counter = 0;
+		
 		StringBuffer strReturn = new StringBuffer();
-	OwmClient owm = new OwmClient();
-	owm.setAPPID("a0cce921751099ac376c0d8b77541f2e");
-	WeatherStatusResponse currentWeather = owm.currentWeatherAtCity("Warsaw", "PL");
-	if (currentWeather.hasWeatherStatus ()) {
-	    WeatherData weather = currentWeather.getWeatherStatus ().get (0);
-	    strReturn.append("Temp=");
-	    strReturn.append(new BigDecimal(weather.getTemp() / 100).setScale(1, BigDecimal.ROUND_HALF_UP));
-	    strReturn.append("*");
-	    strReturn.append(" Humidity=");
-	    strReturn.append(new BigDecimal(weather.getHumidity()).setScale(1, BigDecimal.ROUND_HALF_UP));
-	    strReturn.append("%");
-//	    if (weather.getPrecipitation () == Integer.MIN_VALUE) {
-//	        WeatherCondition weatherCondition = weather.getWeatherConditions ().get (0);
-//	        String description = weatherCondition.getDescription ();
-//	        if (description.contains ("rain") || description.contains ("shower"))
-//	            System.out.println ("No rain measures in Tokyo but reports of " + description);
-//	        else
-//	            System.out.println ("No rain measures in Tokyo: " + description);
-//	    } else
-//	        System.out.println ("It's raining in Tokyo: " + weather.getPrecipitation () + " mm/h");
-	}
+
+		// declaring object of "OpenWeatherMap" class
+		OpenWeatherMap owm = new OpenWeatherMap("");
+		owm.setApiKey("a0cce921751099ac376c0d8b77541f2e");
+		owm.setUnits(Units.METRIC);
+
+		// getting current weather data for the "London" city
+		CurrentWeather cwd = owm.currentWeatherByCityName("Warsaw");
+
+		// printing city name from the retrieved data
+		// System.out.println("City: " + cwd.getCityName());
+
+		// printing the max./min. temperature
+		strReturn.append("Temp=");
+		strReturn.append(new BigDecimal(cwd.getMainInstance().getTemperature())
+				.setScale(1, BigDecimal.ROUND_HALF_UP));
+		
+//		strReturn.append("__");
+//		strReturn.append(new BigDecimal(cwd.getMainInstance().getMaxTemperature())
+//		.setScale(1, BigDecimal.ROUND_HALF_UP));
+//		strReturn.append(new BigDecimal(cwd.getMainInstance().getMinTemperature())
+//		.setScale(1, BigDecimal.ROUND_HALF_UP));
+//		strReturn.append("__");
+//		
+		strReturn.append("*");
+		strReturn.append(" Humidity=");
+		strReturn.append(new BigDecimal(cwd.getMainInstance().getHumidity())
+				.setScale(1, BigDecimal.ROUND_HALF_UP));
+		strReturn.append("%");
+
+		// OwmClient owm = new OwmClient();
+		// owm.setAPPID("a0cce921751099ac376c0d8b77541f2e");
+		// WeatherStatusResponse currentWeather =
+		// owm.currentWeatherAtCity("Warsaw", "PL");
+		// if (currentWeather.hasWeatherStatus ()) {
+		// WeatherData weather = currentWeather.getWeatherStatus ().get (0);
+		// strReturn.append("Temp=");
+		// strReturn.append(new BigDecimal(weather.getMain().getTemp() /
+		// 100).setScale(1, BigDecimal.ROUND_HALF_UP));
+		// strReturn.append("*");
+		// strReturn.append(" Humidity=");
+		// strReturn.append(new BigDecimal(weather.getHumidity()).setScale(1,
+		// BigDecimal.ROUND_HALF_UP));
+		// strReturn.append("%");
+		// }
+
 		return strReturn.toString();
 	}
 }

@@ -11,7 +11,16 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
 public class Thermometr {
+	
+	private static int counter = 10;
+	
 	public String testMethod() throws Exception {
+//		if(counter < 10) {
+//			counter++;
+//			return "";
+//		}
+//		
+//		counter = 0;
 		StringBuffer strReturn = new StringBuffer();
 		JSch jsch = new JSch();
 		Session session = jsch.getSession("pi", "192.168.1.16", 22);
