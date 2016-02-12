@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Properties;
 
 import com.jcraft.jsch.ChannelExec;
@@ -64,6 +66,19 @@ public class Thermometr {
 		return strReturn.toString();
 	}
 
+	
+	public String getCurrentDate() throws Exception {
+		Calendar calendar = Calendar.getInstance();
+		// 3 letter name form of the day
+		
+		// full name form of the day
+		String dayName= new SimpleDateFormat("EEEE", Locale.ENGLISH).format(calendar.getTime());
+		String currentDateString =  new SimpleDateFormat("dd.MM.yy").format(calendar.getTime());
+		
+		return dayName + ", " + currentDateString;
+	}
+	
+	
 	public String getCurrentTime() throws Exception {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");

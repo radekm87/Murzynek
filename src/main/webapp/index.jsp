@@ -36,35 +36,57 @@
 </head>
 <body bgcolor="black">
 
-	<h1>
-		CZAS:
-		<%
-		Thermometr tc = new Thermometr();
-		out.print(tc.getCurrentTime());
-		%>
-	</h1>
-	
-	<h2>
-			DP:
-			<%
-			// Set refresh, autoload time as 360s = 5 min
-			response.setIntHeader("Refresh", 60);
-			// Get current time
-			out.print(tc.testMethod());	
+	<table align="left" border="0" cellpadding="1" cellspacing="1"
+		style="width: 100%;">
+		<tbody>
+			<tr>
+				<td style="width: 50%; vertical-align: top;">
+					<h4>
+						<%
+							Thermometr tc = new Thermometr();
+							out.print(tc.getCurrentDate());
+						%>
+					</h4>
+					<h1>
+						<%
+							out.print(tc.getCurrentTime());
+						%>
+					</h1>
+				</td>
 
-			
-		%>
-		</h2>
+				<td>					
+					<img src="chmura.png" style="float: left; width: 165px; height: 100px;" />
+					<h4>
+						Na dworzu:
+					</h4>
+					<h1>
+						<%
+						WeatherInformator wi = new WeatherInformator();
+						out.print(wi.getCurrentWeatherInfo());
+					%>
+					</h1>
+					</br>
+					</br>
 
-		<h2>
-			DW:
-			<%
-			WeatherInformator wi = new WeatherInformator();
-			out.print(wi.getCurrentWeatherInfo());
+					<h2>
+						<%
+						// Set refresh, autoload time as 360s = 5 min
+						// response.setIntHeader("Refresh", 60); jest w naglowku
+						// Get current time
+						out.print(tc.testMethod());
+					%>
+					</h2>
+				</td>
+			</tr>
 
-		%>
-		</h2>
-	
+			<tr>
+				<td class="tg-yw4l"></td>
+				<td class="tg-yw4l"></td>
+			</tr>
+		</tbody>
+	</table>
+
+
 	<div class="container theme-showcase">
 
 		<!--
