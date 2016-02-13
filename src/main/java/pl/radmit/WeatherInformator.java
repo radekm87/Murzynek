@@ -23,8 +23,10 @@ public class WeatherInformator {
 		// declaring object of "OpenWeatherMap" class
 		OpenWeatherMap owm = new OpenWeatherMap("");
 		owm.setApiKey("a0cce921751099ac376c0d8b77541f2e");
-		owm.setUnits(Units.METRIC);
-		owm.setLang(Language.POLISH);
+
+		// Bug po stronie openweathermap - przyjumujemy default tj kelvin i konwertujemy
+		//		owm.setUnits(Units.METRIC);
+		//		owm.setLang(Language.POLISH);
 
 		// getting current weather data for the "London" city
 		CurrentWeather cwd = owm.currentWeatherByCityName("Warsaw");
@@ -33,7 +35,10 @@ public class WeatherInformator {
 		// System.out.println("City: " + cwd.getCityName());
 
 		// printing the max./min. temperature
-		strReturn.append(new BigDecimal(cwd.getMainInstance().getTemperature())
+		float tempFromOWM = cwd.getMainInstance().getTemperature();
+		double actualTempInC = tempFromOWM - 273.15;
+		
+		strReturn.append(new BigDecimal(actualTempInC)
 				.setScale(1, BigDecimal.ROUND_HALF_UP));
 		
 		strReturn.append("*\n");
