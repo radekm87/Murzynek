@@ -25,28 +25,31 @@ public class Thermometr {
 //		counter = 0;
 		StringBuffer strReturn = new StringBuffer();
 		JSch jsch = new JSch();
-		Session session = jsch.getSession("pi", "192.168.1.16", 22);
+		try {
+			Session session = jsch.getSession("pi", "192.168.1.12", 22);
 
-		session.setPassword("raspberry");
-		Properties config = new Properties();
-		config.put("StrictHostKeyChecking", "no");
-		session.setConfig(config);
-		session.connect();
+			session.setPassword("raspberry");
+			Properties config = new Properties();
+			config.put("StrictHostKeyChecking", "no");
+			session.setConfig(config);
+			session.connect();
 
-		ChannelExec channel = (ChannelExec) session.openChannel("exec");
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				channel.getInputStream()));
-		channel.setCommand("sudo ./git/Adafruit_Python_DHT/examples/AdafruitDHT.py 22 4;");
-		channel.connect();
+			ChannelExec channel = (ChannelExec) session.openChannel("exec");
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					channel.getInputStream()));
+			channel.setCommand("sudo ./git/Adafruit_Python_DHT/examples/AdafruitDHT.py 22 4;");
+			channel.connect();
 
-		String msg = null;
-		while ((msg = in.readLine()) != null) {
-			strReturn.append(msg);
+			String msg = null;
+			while ((msg = in.readLine()) != null) {
+				strReturn.append(msg);
+			}
+
+			channel.disconnect();
+			session.disconnect();
+		} catch(Exception e) {
+			strReturn.append("ERR");
 		}
-
-		channel.disconnect();
-		session.disconnect();
-
 		//
 		//
 		// Process p = Runtime.getRuntime().exec("ssh pi@192.168.1.16");
