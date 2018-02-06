@@ -2,10 +2,10 @@
 <%@page import="pl.radmit.WeatherInformator"%>
 
 <div>
-	<h2>
+	<h4>
 		<%
 			Thermometr tc3 = new Thermometr();
 			out.print(tc3.testMethod());
 		%>
-	</h2>
+	</h4>
 </div>
