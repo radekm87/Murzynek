@@ -3,11 +3,11 @@
 <%@page import="java.util.GregorianCalendar"%>
 
 <div>
-	<h1>
+	<h0>
 		<%
 			Thermometr tc2 = new Thermometr();
 			out.print(tc2.getCurrentTime());
 		%>
-	</h1>
+	</h0>
 
 </div>

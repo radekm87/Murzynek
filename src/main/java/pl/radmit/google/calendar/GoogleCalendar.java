@@ -142,11 +142,11 @@ public class GoogleCalendar {
                     continue;
                 }
 
-                DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+                DateFormat df = new SimpleDateFormat("dd.MM");
 
 
                 if(previousDate != null && df.format(previousDate).equals(df.format(start))){
-                    sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- " + event.getSummary() + "<br/>");
+                    sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- " + event.getSummary() + "<br/>");
                 } else {
                     sb.append(df.format(start)).append(" - ").append(event.getSummary() ).append("<br/>");
                 }

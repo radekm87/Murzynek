@@ -1,11 +1,15 @@
 package pl.radmit;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import com.google.api.client.util.Lists;
 import net.aksingh.owmjapis.CurrentWeather;
+import net.aksingh.owmjapis.DailyForecast;
 import net.aksingh.owmjapis.OpenWeatherMap;
 import net.aksingh.owmjapis.OpenWeatherMap.Language;
 import net.aksingh.owmjapis.OpenWeatherMap.Units;
+import pl.radmit.weather.dto.FullDayWeather;
 
 public class WeatherInformator {
 	private static int counter = 10;
@@ -46,9 +50,35 @@ public class WeatherInformator {
 //		strReturn.append(new BigDecimal(cwd.getMainInstance().getHumidity())
 //				.setScale(1, BigDecimal.ROUND_HALF_UP));
 //		strReturn.append("%");
-
-		
-
 		return strReturn.toString();
+	}
+
+	public List<FullDayWeather> getWeatherInfoFor4Days() throws Exception {
+
+		List<FullDayWeather> daysWeather = Lists.newArrayList();
+
+		// declaring object of "OpenWeatherMap" class
+		OpenWeatherMap owm = new OpenWeatherMap("");
+		owm.setApiKey("a0cce921751099ac376c0d8b77541f2e");
+
+		owm.setUnits(Units.METRIC);
+		owm.setLang(Language.POLISH);
+
+
+
+		// pobranie prognozy pogody na 5 dni, bo dzien pierwszy to obecny
+		byte count = 5;
+		DailyForecast dailyForecast = owm.dailyForecastByCityName("Warsaw", count);
+		for(int i=1; i<dailyForecast.getForecastCount(); i++) {
+			DailyForecast.Forecast forecastInstance = dailyForecast.getForecastInstance(i);
+			FullDayWeather d = new FullDayWeather(
+					new BigDecimal(forecastInstance.getTemperatureInstance().getDayTemperature()).setScale(1, BigDecimal.ROUND_HALF_UP).toString(),
+					forecastInstance.getWeatherInstance(0).getWeatherIconName()
+			);
+			daysWeather.add(d);
+		}
+
+
+		return daysWeather;
 	}
 }
