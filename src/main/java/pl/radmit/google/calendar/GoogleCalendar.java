@@ -114,12 +114,14 @@ public class GoogleCalendar {
 
         // List the next 10 events from the primary calendar.
         DateTime now = new DateTime(System.currentTimeMillis());
+        DateTime sevenDays = new DateTime(System.currentTimeMillis() + 604800000);
 
         StringBuilder sb = new StringBuilder();
 
         Events events = service.events().list("primary")
                 .setMaxResults(12)
                 .setTimeMin(now)
+//                .setTimeMax(sevenDays)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute();

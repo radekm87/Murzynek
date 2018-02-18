@@ -76,11 +76,32 @@ public class Thermometr {
 		
 		// full name form of the day
 		String dayName= new SimpleDateFormat("EEEE", Locale.ENGLISH).format(calendar.getTime());
+		dayName = convertToPolish(dayName);
 		String currentDateString =  new SimpleDateFormat("dd.MM.yy").format(calendar.getTime());
 		
 		return dayName + ", " + currentDateString;
 	}
-	
+
+	private String convertToPolish(String dayName) {
+		String s = dayName.toLowerCase();
+		if (s.equals("monday")) {
+			return "Poniedziałek";
+		} else if (s.equals("thuersday")) {
+			return "Wtorek";
+		} else if (s.equals("wednesday")) {
+			return "Środa";
+		}else if (s.equals("thursday")) {
+			return "Czwartek";
+		}else if (s.equals("friday")) {
+			return "Piątek";
+		}else if (s.equals("saturday")) {
+			return "Sobota";
+		}else if (s.equals("sunday")) {
+			return "Niedziela";
+		}
+
+		return dayName;
+	}
 	
 	public String getCurrentTime() throws Exception {
 		Calendar cal = Calendar.getInstance();

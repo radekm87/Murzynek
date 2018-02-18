@@ -11,26 +11,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DeviceXiaomi {
 
-    private String link;
+//    private String link;
     private String state;
     private String label;
 
     public DeviceXiaomi() {
     }
 
-    public DeviceXiaomi(String link, String state, String label) {
-        this.link = link;
+    public DeviceXiaomi( String state, String label) {
+//        this.link = link;
         this.state = state;
         this.label = label;
     }
 
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
+//    public String getLink() {
+//        return link;
+//    }
+//
+//    public void setLink(String link) {
+//        this.link = link;
+//    }
 
     public String getState() {
         return state;

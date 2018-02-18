@@ -4,7 +4,7 @@
 
 <div>
 	<img src="pictures/chmura.png" style="float: left; width: 165px; height: 100px;" />
-	<h4>Na dworzu:</h4>
+	<h4>Warszawa</h4>
 	<h1>
 		<%
 			WeatherInformator wi = new WeatherInformator();
@@ -18,7 +18,7 @@
 </div>
 
 <div>
-	<table class="table">
+	<table class="table table2">
 		<tr>
 			<%
 				List<FullDayWeather> daysWeather = wi.getWeatherInfoFor4Days();
@@ -42,7 +42,7 @@
 				for(FullDayWeather day : daysWeather) {
 			%>
 
-				<td><%= day.getTemperature() %></td>
+			<td><h6><%= day.getTemperature() %> </h6></td>
 
 			<%
 				}

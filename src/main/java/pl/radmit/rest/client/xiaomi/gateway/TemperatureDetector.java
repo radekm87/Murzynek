@@ -1,13 +1,14 @@
 package pl.radmit.rest.client.xiaomi.gateway;
 
+import com.google.api.client.util.Lists;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by radek on 06.02.2018.
@@ -15,50 +16,38 @@ import java.net.URL;
 public class TemperatureDetector {
 
     private static final String REST_URI
-            = "http://192.168.1.12:8080/rest/items/";
+            = "http://192.168.1.12:8080/rest/items";
 
+    Client client = ClientBuilder.newClient();
 
+    public List<DeviceXiaomi> getAllTemperatureSensorFromOpenhab(){
+        List<ItemOpenhab> allItemsFromOpenhab = getAllItemsFromOpenhab();
+        List<ItemOpenhab> temperatureItems = filtrItemsByCategory(allItemsFromOpenhab);
 
+        List<DeviceXiaomi> xiaomiList = temperatureItems.stream().map(itemOpenhab -> {
+            BigDecimal tempValue = itemOpenhab.getState()==null || itemOpenhab.getState().equalsIgnoreCase("null") ? BigDecimal.valueOf(0) : new BigDecimal(itemOpenhab.getState()).setScale(1, BigDecimal.ROUND_HALF_UP);
+            return new DeviceXiaomi(tempValue.toString(), itemOpenhab.getLabel());
+        }).collect(Collectors.toList());
 
-    public String lecPoAllCzujkachTemp(){
-        StringBuilder sb = new StringBuilder();
-        Client client = ClientBuilder.newClient();
-        DeviceXiaomi pSalon = getJsonEmployee("XiaomiMiTemperatureHumiditySensorP9_Temperature", client);
-        sb.append("Salon: " + new BigDecimal(pSalon.getState()).setScale(1, BigDecimal.ROUND_HALF_UP));
-        sb.append("<br/>");
-        DeviceXiaomi p9 = getJsonEmployee("XiaomiMiTemperatureHumiditySensor_Temperature", client);
-        sb.append("P9: " + new BigDecimal(p9.getState()).setScale(1, BigDecimal.ROUND_HALF_UP));
-
-        return sb.toString();
+        return xiaomiList;
     }
 
-
-    private DeviceXiaomi getJsonEmployee(String deviceName, Client client) {
+    private List<ItemOpenhab> getAllItemsFromOpenhab() {
         try {
-            return client
-                    .target(REST_URI)
-                    .path(deviceName)
-                    .request(MediaType.APPLICATION_JSON)
-                    .get(DeviceXiaomi.class);
-        } catch(Exception e) {
-            e.printStackTrace();
-            return new DeviceXiaomi("", "0", "");
+            List<ItemOpenhab> itemsOpenhab = client.target(REST_URI).path("/").request(MediaType.APPLICATION_JSON).get(new GenericType<List<ItemOpenhab>>() {});
+            return itemsOpenhab;
+        } catch (Exception e) {
+            return Lists.newArrayList();
         }
     }
 
-//    private void updateCustomer(Customer customer) {
-//        try {
-//            Client client = ClientBuilder.newClient();
-//            WebTarget target = client.target("http://192.168.1.12:8080").path("resource");
-//
-//
-//
-//            MyJAXBBean bean =
-//                    target.request(MediaType.APPLICATION_JSON_TYPE)
-//                            .post(Entity.entity(form,MediaType.APPLICATION_FORM_URLENCODED_TYPE),
-//                                    MyJAXBBean.class);
-//        } catch(Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    private List<ItemOpenhab> filtrItemsByCategory(List<ItemOpenhab> allItemsFromOpenhab) {
+        return allItemsFromOpenhab.stream()
+                    .filter(i -> i.getCategory() != null &&
+                            (
+                                    i.getCategory().equalsIgnoreCase("temperature")
+                                           // || i.getCategory().equalsIgnoreCase("humidity")
+                            )
+                    ).collect(Collectors.toList());
+    }
 }

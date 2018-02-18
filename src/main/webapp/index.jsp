@@ -1,7 +1,7 @@
 <%@page import="pl.radmit.Thermometr"%>
 <%@page import="pl.radmit.WeatherInformator"%>
 <%@page import="java.util.Calendar"%>
-
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <html>
 <head>
@@ -32,6 +32,7 @@
 					<%@include file="current_day.jsp" %>
 						<br/>
 						<br/>
+						<br/>
 					</div>
 					<div id=load_time>
 						<%@include file="time_page.jsp" %>
@@ -48,21 +49,25 @@
 				</td>
 			</tr>
 
-			<tr>
-				<td>
-					<div id="load_calendar">
-						<%@include file="current_calendar.jsp" %>
+			<tr >
+				<td valign="top">
+					<div id="load_calendar" >
+						<div  style="position: relative; overflow: hidden;">
+							<%@include file="current_calendar.jsp" %>
+							<div class="fadeout"></div>
+						</div>
 					</div>
 				</td>
 
-				<td align="right">
-					<div id="load_temp">
-						<%@include file="current_temp.jsp" %>
+				<td align="right" valign="top">
+					<div id="load_xiaomi_temp">
+						<%@include file="current_temp_xiaomi.jsp" %>
 					</div>
 
 					<br/>
-					<div id="load_xiaomi_temp">
-						<%@include file="current_temp_xiaomi.jsp" %>
+
+					<div id="load_temp">
+						<%@include file="current_temp.jsp" %>
 					</div>
 				</td>
 			</tr>
