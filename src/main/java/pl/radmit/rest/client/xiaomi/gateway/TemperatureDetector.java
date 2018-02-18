@@ -32,6 +32,11 @@ public class TemperatureDetector {
         return xiaomiList;
     }
 
+//    ClientConfig configuration = new ClientConfig();
+//configuration.property(ClientProperties.CONNECT_TIMEOUT, 1000);
+//configuration.property(ClientProperties.READ_TIMEOUT, 1000);
+//    Client client = ClientBuilder.newClient(configuration);
+
     private List<ItemOpenhab> getAllItemsFromOpenhab() {
         try {
             List<ItemOpenhab> itemsOpenhab = client.target(REST_URI).path("/").request(MediaType.APPLICATION_JSON).get(new GenericType<List<ItemOpenhab>>() {});

@@ -14,7 +14,7 @@ import pl.radmit.weather.dto.FullDayWeather;
 public class WeatherInformator {
 	private static int counter = 10;
 	
-	public String getCurrentWeatherInfo() throws Exception {
+	public FullDayWeather getCurrentWeatherInfo() throws Exception {
 //		if(counter < 10) {
 //			counter++;
 //			return "";
@@ -40,17 +40,11 @@ public class WeatherInformator {
 
 		// printing the max./min. temperature
 		float tempFromOWM = cwd.getMainInstance().getTemperature();
-		double actualTempInC = tempFromOWM ; //- 273.15;
+//		double actualTempInC = tempFromOWM ; //- 273.15;
 		
-		strReturn.append(new BigDecimal(actualTempInC)
-				.setScale(1, BigDecimal.ROUND_HALF_UP));
+		String tmp = new BigDecimal(tempFromOWM).setScale(1, BigDecimal.ROUND_HALF_UP).toString();
 		
-		strReturn.append("*\n");
-//		strReturn.append(" Humidity=");
-//		strReturn.append(new BigDecimal(cwd.getMainInstance().getHumidity())
-//				.setScale(1, BigDecimal.ROUND_HALF_UP));
-//		strReturn.append("%");
-		return strReturn.toString();
+		return new FullDayWeather(tmp, cwd.getWeatherInstance(0).getWeatherIconName(), "100");
 	}
 
 	public List<FullDayWeather> getWeatherInfoFor4Days() throws Exception {
@@ -73,7 +67,8 @@ public class WeatherInformator {
 			DailyForecast.Forecast forecastInstance = dailyForecast.getForecastInstance(i);
 			FullDayWeather d = new FullDayWeather(
 					new BigDecimal(forecastInstance.getTemperatureInstance().getDayTemperature()).setScale(1, BigDecimal.ROUND_HALF_UP).toString(),
-					forecastInstance.getWeatherInstance(0).getWeatherIconName()
+					forecastInstance.getWeatherInstance(0).getWeatherIconName(),
+					"40"
 			);
 			daysWeather.add(d);
 		}

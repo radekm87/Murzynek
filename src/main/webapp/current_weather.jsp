@@ -3,12 +3,15 @@
 <%@ page import="pl.radmit.weather.dto.FullDayWeather" %>
 
 <div>
-	<img src="pictures/chmura.png" style="float: left; width: 165px; height: 100px;" />
-	<h4>Warszawa</h4>
+	<%
+		WeatherInformator wi = new WeatherInformator();
+		FullDayWeather wInfo = wi.getCurrentWeatherInfo();
+	%>
+	<img src="<%= wInfo.getPathIcon()%>" style="float: left; " />
+	<h4>&nbsp;&nbsp;Warszawa</h4>
 	<h1>
 		<%
-			WeatherInformator wi = new WeatherInformator();
-			out.print(wi.getCurrentWeatherInfo());
+			out.print("&nbsp;&nbsp;&nbsp;" + wInfo.getTemperature());
 		%>
 	</h1>
 </div>

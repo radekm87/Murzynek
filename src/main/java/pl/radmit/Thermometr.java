@@ -79,7 +79,7 @@ public class Thermometr {
 		dayName = convertToPolish(dayName);
 		String currentDateString =  new SimpleDateFormat("dd.MM.yy").format(calendar.getTime());
 		
-		return dayName + ", " + currentDateString;
+		return dayName + ", " + currentDateString + "<br/><br/>";
 	}
 
 	private String convertToPolish(String dayName) {
