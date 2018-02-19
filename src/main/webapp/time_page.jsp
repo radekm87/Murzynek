@@ -1,6 +1,7 @@
 <%@page import="pl.radmit.Thermometr"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.GregorianCalendar"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <div>
 	<h0>

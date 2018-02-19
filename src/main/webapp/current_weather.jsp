@@ -1,6 +1,7 @@
 <%@page import="pl.radmit.WeatherInformator"%>
 <%@ page import="java.util.List" %>
 <%@ page import="pl.radmit.weather.dto.FullDayWeather" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <div>
 	<%

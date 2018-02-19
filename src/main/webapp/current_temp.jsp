@@ -1,11 +1,12 @@
 <%@page import="pl.radmit.Thermometr"%>
 <%@page import="pl.radmit.WeatherInformator"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <div>
-	<h4>
+	<h6>
 		<%
 			Thermometr tc3 = new Thermometr();
 			out.print(tc3.testMethod());
 		%>
-	</h4>
+	</h6>
 </div>

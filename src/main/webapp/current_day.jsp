@@ -1,4 +1,5 @@
 <%@page import="pl.radmit.Thermometr"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <div>
 	<h4>

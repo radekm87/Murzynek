@@ -7,13 +7,15 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
-
+import com.google.api.client.util.Lists;
+import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.*;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.Events;
+import pl.radmit.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +23,7 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -29,26 +32,37 @@ import java.util.List;
  */
 public class GoogleCalendar {
 
-    /** Application name. */
+    /**
+     * Application name.
+     */
     private static final String APPLICATION_NAME =
             "Google Calendar API Java Quickstart";
 
-    /** Directory to store user credentials for this application. */
+    /**
+     * Directory to store user credentials for this application.
+     */
     private static final java.io.File DATA_STORE_DIR = new java.io.File(
             System.getProperty("user.home"), ".credentials/calendar-java-quickstart");
 
-    /** Global instance of the {@link FileDataStoreFactory}. */
+    /**
+     * Global instance of the {@link FileDataStoreFactory}.
+     */
     private static FileDataStoreFactory DATA_STORE_FACTORY;
 
-    /** Global instance of the JSON factory. */
+    /**
+     * Global instance of the JSON factory.
+     */
     private static final JsonFactory JSON_FACTORY =
             JacksonFactory.getDefaultInstance();
 
-    /** Global instance of the HTTP transport. */
+    /**
+     * Global instance of the HTTP transport.
+     */
     private static HttpTransport HTTP_TRANSPORT;
 
-    /** Global instance of the scopes required by this quickstart.
-     *
+    /**
+     * Global instance of the scopes required by this quickstart.
+     * <p>
      * If modifying these scopes, delete your previously saved credentials
      * at ~/.credentials/calendar-java-quickstart
      */
@@ -67,6 +81,7 @@ public class GoogleCalendar {
 
     /**
      * Creates an authorized Credential object.
+     *
      * @return an authorized Credential object.
      * @throws IOException
      */
@@ -93,6 +108,7 @@ public class GoogleCalendar {
 
     /**
      * Build and return an authorized Calendar client service.
+     *
      * @return an authorized Calendar client service
      * @throws IOException
      */
@@ -105,12 +121,12 @@ public class GoogleCalendar {
                 .build();
     }
 
-    public String getWydarzenia() throws IOException {
+    public List<GCalendarDto> getCalendarEvents() throws IOException {
         // Build a new authorized API client service.
         // Note: Do not confuse this class with the
         //   com.google.api.services.calendar.model.Calendar class.
-        com.google.api.services.calendar.Calendar service =
-                getCalendarService();
+        com.google.api.services.calendar.Calendar service = getCalendarService();
+        List<GCalendarDto> dtos = Lists.newArrayList();
 
         // List the next 10 events from the primary calendar.
         DateTime now = new DateTime(System.currentTimeMillis());
@@ -119,9 +135,9 @@ public class GoogleCalendar {
         StringBuilder sb = new StringBuilder();
 
         Events events = service.events().list("primary")
-                .setMaxResults(12)
+                .setMaxResults(7)
                 .setTimeMin(now)
-//                .setTimeMax(sevenDays)
+                .setTimeMax(sevenDays)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute();
@@ -140,25 +156,31 @@ public class GoogleCalendar {
 
                 Date start = new Date(startG.getValue());
 
-                if(event.getSummary().contains("Eilat") || event.getSummary().contains("W6 1566")){
+                if (event.getSummary().contains("Eilat") || event.getSummary().contains("W6 1566")) {
                     continue;
                 }
 
                 DateFormat df = new SimpleDateFormat("dd.MM");
 
 
-                if(previousDate != null && df.format(previousDate).equals(df.format(start))){
-                    sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- " + event.getSummary() + "<br/>");
+                if (previousDate != null && df.format(previousDate).equals(df.format(start))) {
+                    // sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- " + event.getSummary() + "<br/>");
+                    GCalendarDto gCalendarDto = new GCalendarDto("", df.format(start), event.getSummary());
+                    dtos.add(gCalendarDto);
                 } else {
-                    sb.append(df.format(start)).append(" - ").append(event.getSummary() ).append("<br/>");
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(start);
+                    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+                    String dayName = Utils.convertToPolish(dayOfWeek);
+
+                    GCalendarDto gCalendarDto = new GCalendarDto(dayName, df.format(start), event.getSummary());
+                    dtos.add(gCalendarDto);
                 }
 
-            previousDate = start;
-//                System.out.printf("%s (%s)\n", event.getSummary(), start);
+                previousDate = start;
             }
         }
 
-        return sb.toString();
+        return dtos;
     }
-
 }
