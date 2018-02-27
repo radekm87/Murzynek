@@ -125,7 +125,16 @@ public class GoogleCalendar {
         // Build a new authorized API client service.
         // Note: Do not confuse this class with the
         //   com.google.api.services.calendar.model.Calendar class.
-        com.google.api.services.calendar.Calendar service = getCalendarService();
+
+        com.google.api.services.calendar.Calendar service = null;
+
+        try {
+            service = getCalendarService();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return Lists.newArrayList();
+        }
+
         List<GCalendarDto> dtos = Lists.newArrayList();
 
         // List the next 10 events from the primary calendar.

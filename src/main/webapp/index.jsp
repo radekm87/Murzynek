@@ -68,18 +68,14 @@
         </td>
     </tr>
 
-    <tr>
-        <td class="tg-yw4l"></td>
-        <td class="tg-yw4l"></td>
-    </tr>
     </tbody>
 </table>
 
 
-<div class="container theme-showcase">
+<%--<div class="container theme-showcase">--%>
 
 
-</div>
+<%--</div>--%>
 
 <%--ODKOMENTOWAC I BEDZIE FADE OUT--%>
 <%--<div>--%>
