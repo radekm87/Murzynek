@@ -25,7 +25,8 @@ public class TemperatureDetector {
         List<ItemOpenhab> temperatureItems = filtrItemsByCategory(allItemsFromOpenhab);
 
         List<DeviceXiaomi> xiaomiList = temperatureItems.stream().map(itemOpenhab -> {
-            BigDecimal tempValue = itemOpenhab.getState()==null || itemOpenhab.getState().equalsIgnoreCase("null") ? BigDecimal.valueOf(0) : new BigDecimal(itemOpenhab.getState()).setScale(1, BigDecimal.ROUND_HALF_UP);
+            BigDecimal tempValue = itemOpenhab.getState()==null || itemOpenhab.getState().equalsIgnoreCase("null") ? BigDecimal.valueOf(0) :
+                    new BigDecimal(itemOpenhab.getState()).subtract(new BigDecimal(0.7)).setScale(1, BigDecimal.ROUND_HALF_UP);
             return new DeviceXiaomi(tempValue.toString(), itemOpenhab.getLabel());
         }).collect(Collectors.toList());
 

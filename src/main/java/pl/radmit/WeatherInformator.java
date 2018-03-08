@@ -38,6 +38,10 @@ public class WeatherInformator {
 		// printing city name from the retrieved data
 		// System.out.println("City: " + cwd.getCityName());
 
+		if(cwd.getMainInstance() == null) {
+			return new FullDayWeather("00", "", "100");
+		}
+
 		// printing the max./min. temperature
 		float tempFromOWM = cwd.getMainInstance().getTemperature();
 //		double actualTempInC = tempFromOWM ; //- 273.15;

@@ -9,12 +9,14 @@
 		FullDayWeather wInfo = wi.getCurrentWeatherInfo();
 	%>
 	<img src="<%= wInfo.getPathIcon()%>" style="float: left; " />
+	<div>
 	<h4>&nbsp;&nbsp;Warszawa</h4>
 	<h1>
 		<%
 			out.print("&nbsp;&nbsp;&nbsp;" + wInfo.getTemperature());
 		%>
 	</h1>
+	</div>
 </div>
 
 <div>
@@ -30,7 +32,7 @@
 				for(FullDayWeather day : daysWeather) {
 			%>
 
-			<td> <img src="<%= day.getPathIcon()%>" style="..."/></td>
+			<td> <img src="<%= day.getPathIcon()%>"/></td>
 			<%
 				}
 			%>
