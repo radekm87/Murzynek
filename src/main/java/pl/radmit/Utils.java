@@ -30,7 +30,7 @@ public class Utils {
         switch(dayNumber) {
             case 6:
                 return "Piątek";
-            case 0:
+            case 7:
                 return "Sobota";
             case 1:
                 return "Niedziela";

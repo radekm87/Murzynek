@@ -137,6 +137,19 @@ public class GoogleCalendar {
 
         List<GCalendarDto> dtos = Lists.newArrayList();
 
+
+        try{
+            fillDtoGoogleCalendarEvents(service, dtos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            dtos.add(new GCalendarDto("Niedziela", "01.01", "Błąd: " + e.getMessage()));
+        }
+
+
+        return dtos;
+    }
+
+    private void fillDtoGoogleCalendarEvents(com.google.api.services.calendar.Calendar service, List<GCalendarDto> dtos) throws IOException {
         // List the next 10 events from the primary calendar.
         DateTime now = new DateTime(System.currentTimeMillis());
         DateTime sevenDays = new DateTime(System.currentTimeMillis() + 604800000);
@@ -189,7 +202,5 @@ public class GoogleCalendar {
                 previousDate = start;
             }
         }
-
-        return dtos;
     }
 }
