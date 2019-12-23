@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class TemperatureDetector {
 
     private static final String REST_URI
-            = "http://192.168.1.12:8080/rest/items";
+            = "http://192.168.1.24:8080/rest/items";
 
     Client client = ClientBuilder.newClient();
 
